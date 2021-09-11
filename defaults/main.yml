@@ -1,0 +1,15 @@
+---
+generate_cert_no_log: true
+generate_cert_key: "{{ inventory_hostname }}.key"
+generate_cert_csr: "{{ inventory_hostname }}.csr"
+generate_cert_crt: "{{ inventory_hostname }}.crt"
+generate_cert_key_path: "/tmp/{{ generate_cert_key }}"
+generate_cert_csr_path: "/tmp/{{ generate_cert_csr }}"
+generate_cert_crt_path: "/tmp/{{ generate_cert_crt }}"
+generate_cert_keys_path: "/etc/elasticsearch/certs"
+generate_cert_root_key:
+generate_cert_root_crt:
+generate_cert_root_ca_pwd:
+generate_cert_common_name:
+generate_cert_subject_alt_name:
+generate_cert_pem: false

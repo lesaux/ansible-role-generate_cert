@@ -1,0 +1,19 @@
+---
+- name: Creates directory
+  file:
+    path: "{{ generate_cert_keys_path }}"
+    state: directory
+
+- name: Upload Server SSL Key certifcate
+  copy:
+    dest: "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.key"
+    src: "{{ generate_cert_key_path }}"
+
+- name: Upload Server SSL certifcate
+  copy:
+    dest: "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.crt"
+    src: "{{ generate_cert_crt_path }}"
+
+- name: Generate pem file
+  shell: cat "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.key" "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.crt" > "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.pem"
+  when: generate_cert_pem

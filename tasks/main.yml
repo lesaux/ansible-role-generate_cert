@@ -1,0 +1,25 @@
+---
+- name: Check if SSL Certificate exist
+  stat:
+    path: "{{ item }}"
+  with_items:
+    - "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.key"
+    - "{{ generate_cert_keys_path }}/{{ inventory_hostname }}.crt"
+  register: ssl_key
+  become: true
+
+- name: Filtering the result from stat module
+  set_fact:
+    certs_exist: "{{ ssl_key.results | map(attribute='stat') | map(attribute='exists') }}"
+
+- name: Generate certificates
+  include: create_cert.yml
+  delegate_to: localhost
+  no_log: "{{ generate_cert_no_log }}"
+  when: not certs_exist is all
+
+- name: Upload certificates
+  include: upload_cert.yml
+  no_log: "{{ generate_cert_no_log }}"
+  when: not certs_exist is all
+  become: true
